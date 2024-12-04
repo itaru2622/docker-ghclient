@@ -35,13 +35,21 @@ RUN chown -R ${uname}:${uname} /home/${uname} ;\
 
 # gh_token4readonly:  create new personal token via github UI 'Fine-grained tokens' form, with just accessing for public repos access but any others.
 # NOTE: ALL BUILD-ARG(INCLUDING GH_TOKEN4READONLY) IS VISIBLE FOR ANYONE BY INSPECTING DOCKER IMAGE.
-ARG gh_token4readonly=changeme
+ARG gh_ext_install_token=changeme
 ARG gh_url4install=github.com
 USER ${uname}
-RUN echo ${gh_token4readonly} | gh auth login -p https -h ${gh_url4install} --with-token; \
-     gh extension install github/gh-gei; gh extension upgrade github/gh-gei; \
+RUN echo ${gh_ext_install_token} | gh auth login -p https -h ${gh_url4install} --with-token; \
+     gh extension install github/gh-gei; \
      gh extension install github.com/github/gh-es; \
+     gh extension install mona-actions/gh-repo-stats; \
+     gh extension install jrnxf/gh-eco; \
+     gh extension install gennaro-tedesco/gh-s; \
+     gh extension install seachicken/gh-poi; \
+     gh extension install github/gh-actions-importer; \
+     gh extension install k1LoW/gh-grep; \
+     gh extension install mislav/gh-repo-collab; \
      gh auth logout; rm -rf /home/${uname}/.config/gh
+
 
 # be sure you logout before ending...
 

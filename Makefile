@@ -5,8 +5,10 @@ GHE_TOKEN ?=changeme
 GHE_FQDN  ?=github.com
 GHE_URL   ?=https://api.${GHE_FQDN}/graphql
 
+GH_EXT_INSTALL_TOKEN ?=changeme
+
 build:
-	docker build --build-arg node_ver=${node_ver} --build-arg gh_token4readonly=${GHE_TOKEN} -t ${img} .
+	docker build --build-arg node_ver=${node_ver} --build-arg gh_ext_install_token=${GH_EXT_INSTALL_TOKEN} -t ${img} .
 
 start:
 	docker run -it --rm -v ${PWD}:${PWD} -w ${PWD} \
