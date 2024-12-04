@@ -19,6 +19,10 @@ RUN addgroup --system --gid ${uid} ${uname} ; \
 ARG node_ver=20
 RUN curl -fsSL https://deb.nodesource.com/setup_${node_ver}.x | bash -
 
+# use github apt repo for latest gh client
+RUN curl -L https://cli.github.com/packages/githubcli-archive-keyring.gpg | apt-key add -; \
+    echo "deb https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
+
 # libicu72: requires github/gh-gei extension
 RUN apt update; apt install -y gh libicu72 git openssh-client         parallel jq make bash-completion vim nodejs
 RUN npm install -g typescript tsx ts-node @octokit/graphql bun
@@ -36,6 +40,7 @@ ARG gh_url4install=github.com
 USER ${uname}
 RUN echo ${gh_token4readonly} | gh auth login -p https -h ${gh_url4install} --with-token; \
      gh extension install github/gh-gei; gh extension upgrade github/gh-gei; \
+     gh extension install github.com/github/gh-es; \
      gh auth logout; rm -rf /home/${uname}/.config/gh
 
 # be sure you logout before ending...
