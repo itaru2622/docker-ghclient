@@ -6,7 +6,7 @@ GHE_FQDN  ?=github.com
 GHE_URL   ?=https://api.${GHE_FQDN}/graphql
 
 build:
-	docker build --build-arg node_ver=${node_ver} -t ${img} .
+	docker build --build-arg node_ver=${node_ver} --build-arg gh_token4readonly=${GHE_TOKEN} -t ${img} .
 
 start:
 	docker run -it --rm -v ${PWD}:${PWD} -w ${PWD} \
