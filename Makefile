@@ -7,8 +7,11 @@ GHE_URL   ?=https://api.${GHE_FQDN}/graphql
 
 GH_EXT_INSTALL_TOKEN ?=changeme
 
+# cf. https://docs.docker.com/reference/cli/docker/buildx/build/#secret
+
 build:
-	docker build --build-arg node_ver=${node_ver} --build-arg gh_ext_install_token=${GH_EXT_INSTALL_TOKEN} -t ${img} .
+	#pass env:GH_EXT_INSTALL_TOKEN as secret id:TOKEN1
+	docker build --build-arg node_ver=${node_ver}  --secret type=env,id=TOKEN1,env=GH_EXT_INSTALL_TOKEN -t ${img} .
 
 start:
 	docker run -it --rm -v ${PWD}:${PWD} -w ${PWD} \

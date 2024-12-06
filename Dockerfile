@@ -26,6 +26,10 @@ RUN curl -L https://cli.github.com/packages/githubcli-archive-keyring.gpg | apt-
 # libicu72: requires github/gh-gei extension
 RUN apt update; apt install -y gh libicu72 git openssh-client         parallel jq make bash-completion vim nodejs
 RUN npm install -g typescript tsx ts-node @octokit/graphql bun
+RUN apt install -y yq; \
+    curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 > /usr/local/bin/yq4; \
+    chmod a+x /usr/local/bin/yq4
+
 
 # install github/gh-gei (standalone tool), NOTE: 'gh extension install' requires 'gh login' on install ops.
 #RUN curl -L -o /usr/local/bin/gh-gei https://github.com/github/gh-gei/releases/download/v1.10.0/gei-linux-amd64; chmod a+x /usr/local/bin/gh-gei
@@ -33,12 +37,12 @@ RUN npm install -g typescript tsx ts-node @octokit/graphql bun
 RUN chown -R ${uname}:${uname} /home/${uname} ;\
     echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen; locale-gen; update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
-# gh_token4readonly:  create new personal token via github UI 'Fine-grained tokens' form, with just accessing for public repos access but any others.
-# NOTE: ALL BUILD-ARG(INCLUDING GH_TOKEN4READONLY) IS VISIBLE FOR ANYONE BY INSPECTING DOCKER IMAGE.
-ARG gh_ext_install_token=changeme
 ARG gh_url4install=github.com
 USER ${uname}
-RUN echo ${gh_ext_install_token} | gh auth login -p https -h ${gh_url4install} --with-token; \
+# pass secret by 'docker build --secret', refer https://docs.docker.com/reference/cli/docker/buildx/build/#secret
+#   deploy secret id:TOKEN1 to env:GH_TOKEN
+RUN  --mount=type=secret,id=TOKEN1,env=GH_TOKEN \
+     gh auth login -p https -h ${gh_url4install} ; \
      gh extension install github/gh-gei; \
      gh extension install github.com/github/gh-es; \
      gh extension install mona-actions/gh-repo-stats; \
@@ -48,8 +52,8 @@ RUN echo ${gh_ext_install_token} | gh auth login -p https -h ${gh_url4install} -
      gh extension install github/gh-actions-importer; \
      gh extension install k1LoW/gh-grep; \
      gh extension install mislav/gh-repo-collab; \
-     gh auth logout; rm -rf /home/${uname}/.config/gh
-
+     gh extension install dlvhdr/gh-dash; \
+     gh auth logout; rm -rf /home/${uname}/.config/gh ;
 
 # be sure you logout before ending...
 
