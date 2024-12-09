@@ -23,8 +23,13 @@ RUN curl -fsSL https://deb.nodesource.com/setup_${node_ver}.x | bash -
 RUN curl -L https://cli.github.com/packages/githubcli-archive-keyring.gpg | apt-key add -; \
     echo "deb https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
 
+# use MS repo for powershell required for github/gh-gei
+RUN curl -L https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -o /tmp/ms-prod.deb; \
+    apt install -y /tmp/ms-prod.deb;  \
+    rm -f /tmp/ms-prod.deb
+
 # libicu72: requires github/gh-gei extension
-RUN apt update; apt install -y gh libicu72 git openssh-client         parallel jq make bash-completion vim nodejs
+RUN apt update; apt install -y gh powershell libicu72 git openssh-client         parallel jq make bash-completion vim nodejs
 RUN npm install -g typescript tsx ts-node @octokit/graphql bun
 RUN apt install -y yq; \
     curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 > /usr/local/bin/yq4; \
@@ -36,6 +41,7 @@ RUN apt install -y yq; \
 
 RUN chown -R ${uname}:${uname} /home/${uname} ;\
     echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen; locale-gen; update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+
 
 ARG gh_url4install=github.com
 USER ${uname}
