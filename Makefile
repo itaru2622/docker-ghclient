@@ -3,9 +3,9 @@ node_ver ?=20
 
 wDir ?=${PWD}
 
-GHE_TOKEN ?=changeme
-GHE_FQDN  ?=github.com
-GHE_URL   ?=https://api.${GHE_FQDN}/graphql
+GH_TOKEN ?=changeme
+GH_FQDN  ?=github.com
+GH_URL   ?=https://api.${GH_FQDN}/graphql
 
 GH_EXT_INSTALL_TOKEN ?=changeme
 
@@ -16,14 +16,14 @@ build:
 	docker build --build-arg node_ver=${node_ver}  --secret type=env,id=TOKEN1,env=GH_EXT_INSTALL_TOKEN -t ${img} .
 
 start:
-	docker run -it --rm -v ${wDir}:${wDir} -w ${wDir} \
+	docker run --name ghclient -it --rm -v ${wDir}:${wDir} -w ${wDir} \
 	   -e BROWSER=false \
-	   -e GHE_TOKEN=${GHE_TOKEN} -e GHE_FQDN=${GHE_FQDN}  -e GHE_URL=${GHE_URL} \
+	   -e GH_TOKEN=${GH_TOKEN} -e GH_FQDN=${GH_FQDN}  -e GH_URL=${GH_URL} \
 	   ${img} /bin/bash
 
 login:
-	echo ${GHE_TOKEN} | gh auth login -p https -h ${GHE_FQDN} --with-token
-	gh auth status
+	echo ${GH_TOKEN} | gh auth login -p https -h ${GH_FQDN} --with-token
+	-gh auth status
 
 logout:
 	gh auth logout
