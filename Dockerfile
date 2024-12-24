@@ -29,10 +29,9 @@ RUN curl -L https://packages.microsoft.com/config/debian/12/packages-microsoft-p
     rm -f /tmp/ms-prod.deb
 
 # libicu72: requires github/gh-gei extension
-RUN apt update; apt install -y gh powershell libicu72 git openssh-client         parallel jq make bash-completion vim nodejs
-RUN npm install -g typescript tsx ts-node @octokit/graphql bun
-RUN apt install -y yq; \
-    curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 > /usr/local/bin/yq4; \
+RUN apt update; apt install -y gh powershell libicu72 git openssh-client         parallel jq yq make bash-completion vim nodejs
+RUN npm install -g typescript tsx ts-node @octokit/graphql @octokit/graphql-schema @octokit/plugin-paginate-graphql commander @commander-js/extra-typings bun
+RUN curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 > /usr/local/bin/yq4; \
     chmod a+x /usr/local/bin/yq4
 
 
