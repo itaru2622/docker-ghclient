@@ -3,9 +3,10 @@ node_ver ?=20
 
 wDir ?=${PWD}
 
-GH_TOKEN ?=changeme
-GH_FQDN  ?=github.com
-GH_URL   ?=https://api.${GH_FQDN}/graphql
+GH_TOKEN         ?=changeme
+GH_FQDN          ?=github.com
+GH_URL           ?=https://api.${GH_FQDN}
+GH_URL_graphQL   ?=https://api.${GH_FQDN}/graphql
 
 GH_EXT_INSTALL_TOKEN ?=changeme
 
@@ -18,7 +19,7 @@ build:
 start:
 	docker run --name ghclient -it --rm -v ${wDir}:${wDir} -w ${wDir} \
 	   -e BROWSER=false \
-	   -e GH_TOKEN=${GH_TOKEN} -e GH_FQDN=${GH_FQDN}  -e GH_URL=${GH_URL} \
+	   -e GH_TOKEN=${GH_TOKEN} -e GH_FQDN=${GH_FQDN}  -e GH_URL=${GH_URL} -e GH_URL_graphQL=${GH_URL_graphQL}\
 	   ${img} /bin/bash
 
 login:
