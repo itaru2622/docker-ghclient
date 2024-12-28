@@ -1,0 +1,83 @@
+name: Docker Build & Publish
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  push:
+    paths-ignore:
+    - '**.md'
+    branches: [ master ]
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+    - '**.md'
+  schedule:
+    - cron: '00 20 * * 0-5'
+  workflow_dispatch:
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: docker.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  UID: 1000
+  UNAME: ghuser
+  # vars from github repository variables.
+  BASE_IMG: ${{ vars.DOCKER_BASE_IMG}}
+  VER_NODE: ${{ vars.VER_NODE }}
+  TAG_LATEST: ${{ vars.DOCKER_EXPORT_TAG}}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: adjust image name from  ${{ github.repository }}
+        run: |
+           echo IMAGE_NAME=${{ env.IMAGE_NAME }} | sed 's/docker-//' >> $GITHUB_ENV
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{raw}}
+            type=schedule,pattern=${{env.TAG_LATEST}}
+            type=ref,event=branch,enable=${{ !endsWith(github.ref, 'refs/heads/master') }}
+            type=raw,value=${{env.TAG_LATEST}},enable=${{ endsWith(github.ref, 'refs/heads/master') }}
+
+      - name: build docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./Dockerfile.actions
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            base=${{ env.BASE_IMG }}
+            uid=${{ env.UID }}
+            uname=${{ env.UNAME }}
+            ver_node=${{ env.VER_NODE }}
+          secrets: |
+            "TOKEN1=${{ secrets.GITHUB_TOKEN }}"
+#   use github TOKEN for TOKEN1 --+
