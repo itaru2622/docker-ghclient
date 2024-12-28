@@ -5,7 +5,6 @@ wDir ?=${PWD}
 
 GH_TOKEN         ?=changeme
 GH_FQDN          ?=github.com
-GH_URL           ?=https://api.${GH_FQDN}
 
 GH_EXT_INSTALL_TOKEN ?=changeme
 
@@ -16,11 +15,11 @@ build:
 	#pass env:GH_EXT_INSTALL_TOKEN as secret id:TOKEN1
 	docker build --build-arg node_ver=${node_ver}  --secret type=env,id=TOKEN1,env=GH_EXT_INSTALL_TOKEN -t ${img} .
 
-# SAMPLE:    make start GH_TOKEN= [ wDir= GH_FQDN= GH_URL= ]
+# SAMPLE:    make start GH_TOKEN= [ wDir= GH_FQDN= ]
 start:
 	docker run --name ghclient -it --rm -v ${wDir}:${wDir} -w ${wDir} \
 	   -e BROWSER=false \
-	   -e GH_TOKEN=${GH_TOKEN} -e GH_FQDN=${GH_FQDN}  -e GH_URL=${GH_URL} \
+	   -e GH_TOKEN=${GH_TOKEN} -e GH_FQDN=${GH_FQDN} \
 	   ${img} /bin/bash
 
 # SAMPLE:    make login [ GH_TOKEN= GH_FQDN= ]
