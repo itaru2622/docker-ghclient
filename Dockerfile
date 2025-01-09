@@ -41,7 +41,6 @@ RUN curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_am
 RUN chown -R ${uname}:${uname} /home/${uname} ;\
     echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen; locale-gen; update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
-
 ARG gh_url4install=github.com
 USER ${uname}
 # pass secret by 'docker build --secret', refer https://docs.docker.com/reference/cli/docker/buildx/build/#secret
@@ -59,8 +58,13 @@ RUN  --mount=type=secret,id=TOKEN1,env=GH_TOKEN \
      gh extension install mislav/gh-repo-collab; \
      gh extension install dlvhdr/gh-dash; \
      gh auth logout; rm -rf /home/${uname}/.config/gh ;
-
 # be sure you logout before ending...
+
+ARG  sDir=/opt/github-misc-scripts
+RUN  sudo mkdir -p ${sDir}; sudo chown ${uname}:${uname} ${sDir}; \
+     git clone https://github.com/joshjohanning/github-misc-scripts.git ${sDir}
+
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${sDir}/api:${sDir}/gh-cli:${sDir}/gh-cli/internal:${sDir}/git:${sDir}/graphql:${sDir}/scripts:${sDir}/scripts/multi-gitter-scripts:${sDir}/scripts/recreate-security-in-repositories-and-teams
 
 ENV TZ=Asia/Tokyo
 WORKDIR /home/${uname}

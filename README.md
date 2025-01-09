@@ -30,7 +30,8 @@ jq
 powershell for gh-gei
 yq
 
-# and maybe more...
+# and more such as ...
+/opt/github-misc-scripts/* from https://github.com/joshjohanning/github-misc-scripts.git
 ```
 
 ## prepare before using
