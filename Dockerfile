@@ -28,6 +28,9 @@ RUN curl -L https://packages.microsoft.com/config/debian/12/packages-microsoft-p
     apt install -y /tmp/ms-prod.deb;  \
     rm -f /tmp/ms-prod.deb
 
+# install azure-cli for managing user on EMU. https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-linux?pivots=apt
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
 # libicu72: requires github/gh-gei extension
 RUN apt update; apt install -y gh powershell libicu72 git openssh-client         parallel jq yq make bash-completion vim nodejs
 RUN npm install -g typescript tsx @octokit/graphql @octokit/graphql-schema @octokit/plugin-paginate-graphql commander @commander-js/extra-typings

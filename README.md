@@ -29,6 +29,7 @@ jq
 @octokit with nodejs/typescript
 powershell for gh-gei
 yq
+azure-cli for managing github EMU via Azure Entra ID.
 
 # and more such as ...
 /opt/github-misc-scripts/* from https://github.com/joshjohanning/github-misc-scripts.git
@@ -101,3 +102,9 @@ topics in github
 Migration among Github Enterprises (Server and Cloud):
 - https://docs.github.com/en/migrations/using-github-enterprise-importer/migrating-between-github-products/migrating-repositories-from-github-enterprise-server-to-github-enterprise-cloud?tool=cli
 
+
+az(azure-cli):
+- https://learn.microsoft.com/en-us/cli/azure/
+- https://learn.microsoft.com/en-us/cli/azure/azure-cli-extensions-list
+- https://github.com/topics/azure-cli
+- https://github.com/topics/azure-cli-extension
