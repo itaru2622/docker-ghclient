@@ -18,6 +18,7 @@ build:
 # SAMPLE:    make start GH_TOKEN= [ wDir= GH_FQDN= ]
 start:
 	docker run --name ghclient -it --rm -v ${wDir}:${wDir} -w ${wDir} \
+	   -e http_proxy=${http_proxy} -e https_proxy=${https_proxy} \
 	   -e BROWSER=false \
 	   -e GH_TOKEN=${GH_TOKEN} -e GH_FQDN=${GH_FQDN} \
 	   ${img} /bin/bash
