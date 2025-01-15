@@ -21,6 +21,7 @@ k1LoW/gh-grep
 mislav/gh-repo-collab
 mona-actions/gh-repo-stats
 seachicken/gh-poi
+timrogers/gh-migrate-project
 
 # others:
 curl
@@ -30,6 +31,7 @@ jq
 powershell for gh-gei
 yq
 azure-cli for managing github EMU via Azure Entra ID.
+githubCsvTools for import/export issues, from https://github.com/gavinr/github-csv-tools
 
 # and more such as ...
 /opt/github-misc-scripts/* from https://github.com/joshjohanning/github-misc-scripts.git
@@ -91,6 +93,9 @@ Github GraphQL:
 
 @octokit:
 - https://github.com/octokit
+
+githubCsvTools:
+- https://github.com/gavinr/github-csv-tools
 
 topics in github
 - https://github.com/topics/gh-extension

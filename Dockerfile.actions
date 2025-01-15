@@ -33,7 +33,7 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 # libicu72: requires github/gh-gei extension
 RUN apt update; apt install -y gh powershell libicu72 git openssh-client         parallel jq yq make bash-completion vim nodejs
-RUN npm install -g typescript tsx @octokit/graphql @octokit/graphql-schema @octokit/plugin-paginate-graphql commander @commander-js/extra-typings
+RUN npm install -g typescript tsx @octokit/graphql @octokit/graphql-schema @octokit/plugin-paginate-graphql commander @commander-js/extra-typings github-csv-tools
 RUN curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 > /usr/local/bin/yq4; \
     chmod a+x /usr/local/bin/yq4
 
@@ -63,6 +63,7 @@ RUN  --mount=type=secret,id=TOKEN1 \
      gh extension install k1LoW/gh-grep; \
      gh extension install mislav/gh-repo-collab; \
      gh extension install dlvhdr/gh-dash; \
+     gh extension install timrogers/gh-migrate-project; \
      gh auth logout; rm -rf /home/${uname}/.config/gh ;
 # be sure you logout before ending...
 
