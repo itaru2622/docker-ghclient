@@ -38,8 +38,8 @@ RUN npm install -g typescript tsx @octokit/graphql @octokit/graphql-schema @octo
 RUN curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 > /usr/local/bin/yq4; \
     chmod a+x /usr/local/bin/yq4
 
-# python libs for graphql and others.
-RUN pip install gql[all] pandas openpyxl pydantic jsonpath-ng
+# python libs for MS x graphql and others.
+RUN pip install msal gql[all]    pandas openpyxl pydantic jsonpath-ng
 
 RUN chown -R ${uname}:${uname} /home/${uname} ;
 
