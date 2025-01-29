@@ -1,4 +1,5 @@
 img ?=itaru2622/ghclient:bookworm
+baseImg  ?=python:3.12-bookworm
 node_ver ?=20
 
 wDir ?=${PWD}
@@ -13,7 +14,9 @@ GH_EXT_INSTALL_TOKEN ?=changeme
 # SAMPLE:    make build GH_EXT_INSTALL_TOKEN=
 build:
 	#pass env:GH_EXT_INSTALL_TOKEN as secret id:TOKEN1
-	docker build --build-arg node_ver=${node_ver}  --secret type=env,id=TOKEN1,env=GH_EXT_INSTALL_TOKEN -t ${img} .
+	docker build  --build-arg http_proxy=${http_proxy} --build-arg https_proxy=${https_proxy} \
+	--build-arg base=${baseImg} --build-arg node_ver=${node_ver} \
+	--secret type=env,id=TOKEN1,env=GH_EXT_INSTALL_TOKEN -t ${img} .
 
 # SAMPLE:    make start GH_TOKEN= [ wDir= GH_FQDN= ]
 start:

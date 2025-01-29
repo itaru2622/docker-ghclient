@@ -2,7 +2,8 @@ ARG base=debian:bookworm
 FROM ${base}
 ARG base=debian:bookworm
 
-RUN apt update; apt install -y curl sudo locales-all locales;
+RUN apt update; apt install -y curl sudo locales-all locales; \
+    echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen; locale-gen; update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
 # create user account, before nodejs(wants uid=1000)
 ARG uid=1000
@@ -37,16 +38,17 @@ RUN npm install -g typescript tsx @octokit/graphql @octokit/graphql-schema @octo
 RUN curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 > /usr/local/bin/yq4; \
     chmod a+x /usr/local/bin/yq4
 
+# python libs for graphql and others.
+RUN pip install gql[all] pandas openpyxl pydantic jsonpath-ng
 
-# install github/gh-gei (standalone tool), NOTE: 'gh extension install' requires 'gh login' on install ops.
-#RUN curl -L -o /usr/local/bin/gh-gei https://github.com/github/gh-gei/releases/download/v1.10.0/gei-linux-amd64; chmod a+x /usr/local/bin/gh-gei
-
-RUN chown -R ${uname}:${uname} /home/${uname} ;\
-    echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen; locale-gen; update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
+RUN chown -R ${uname}:${uname} /home/${uname} ;
 
 ARG gh_url4install=github.com
 USER ${uname}
 # pass secret by 'docker build --secret', refer https://docs.docker.com/reference/cli/docker/buildx/build/#secret
+# https://docs.docker.com/build/ci/github-actions/secrets/
+# https://scrapbox.io/kiryuanzu-public/docker_build_%E5%AE%9F%E8%A1%8C%E6%99%82%E3%81%AB_GitHub_Actions_%E3%81%AE%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E3%81%8B%E3%82%89_secrets%E6%83%85%E5%A0%B1%E3%82%92%E6%B8%A1%E3%81%97%E3%81%9F%E3%81%84%E6%99%82
+#
 #   deploy secret id:TOKEN1 to env:GH_TOKEN
 RUN  --mount=type=secret,id=TOKEN1,env=GH_TOKEN \
      gh auth login -p https -h ${gh_url4install} ; \
