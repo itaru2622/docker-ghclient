@@ -39,7 +39,12 @@ RUN curl -L https://github.com/mikefarah/yq/releases/latest/download/yq_linux_am
     chmod a+x /usr/local/bin/yq4
 
 # python libs for MS x graphql and others.
-RUN pip install msal gql[all]    pandas openpyxl pydantic jsonpath-ng
+RUN pip install msal msgraph-sdk gql[all]    pandas openpyxl pydantic jsonpath-ng python-dotenv
+
+# msgraph cli
+ARG msgcURL=https://github.com/microsoftgraph/msgraph-cli/releases/download/v1.9.0/msgraph-cli-linux-x64-1.9.0.tar.gz
+RUN curl -L ${msgcURL} -o /tmp/msgcli.tgz; \
+    tar zxvf /tmp/msgcli.tgz -C /usr/local/bin ; rm -f  /tmp/msgcli.tgz
 
 RUN chown -R ${uname}:${uname} /home/${uname} ;
 
