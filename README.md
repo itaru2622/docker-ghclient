@@ -30,8 +30,10 @@ jq
 @octokit with nodejs/typescript
 powershell for gh-gei
 yq
-azure-cli for managing github EMU via Azure Entra ID.
+azure-cli, msgraph-cli for managing github EMU and Azure Entra ID.
+pwgen, as password generator
 githubCsvTools for import/export issues, from https://github.com/gavinr/github-csv-tools
+msgraph-sdk-python
 
 # and more such as ...
 /opt/github-misc-scripts/* from https://github.com/joshjohanning/github-misc-scripts.git
