@@ -49,7 +49,7 @@ RUN curl -L ${msgcURL} -o /tmp/msgcli.tgz; \
 RUN chown -R ${uname}:${uname} /home/${uname} ;
 
 ARG gh_url4install=github.com
-USER ${uname}
+#USER ${uname}
 # pass secret by 'docker build --secret', refer https://docs.docker.com/reference/cli/docker/buildx/build/#secret
 # https://docs.docker.com/build/ci/github-actions/secrets/
 # https://scrapbox.io/kiryuanzu-public/docker_build_%E5%AE%9F%E8%A1%8C%E6%99%82%E3%81%AB_GitHub_Actions_%E3%81%AE%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E3%81%8B%E3%82%89_secrets%E6%83%85%E5%A0%B1%E3%82%92%E6%B8%A1%E3%81%97%E3%81%9F%E3%81%84%E6%99%82
