@@ -44,7 +44,7 @@ msgraph-sdk-python
 ```bash
 # FQDN(URL) and TOKEN for github/github enterprise
 export GH_FQDN=github.com
-export GH_TOKEN=your_valid_token_for_ops
+export GH_PAT=your_valid_token_for_ops
 ```
 
 ## basic usage
@@ -60,7 +60,7 @@ gh -h
 #  case 1) use makefile
 make login
 #  case 2) pure gh command
-echo "${GH_TOKEN}" | gh auth login -p https -h ${GH_FQDN} --with-token
+echo "${GH_PAT}" | gh auth login -p https -h ${GH_FQDN} --with-token
 
 # then, you can ops any by gh
 gh repo list
