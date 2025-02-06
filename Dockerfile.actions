@@ -5,18 +5,6 @@ ARG base=debian:bookworm
 RUN apt update; apt install -y curl sudo locales-all locales; \
     echo "ja_JP.UTF-8 UTF-8" > /etc/locale.gen; locale-gen; update-locale LANG=ja_JP.UTF-8 LANGUAGE="ja_JP:ja"
 
-# create user account, before nodejs(wants uid=1000)
-ARG uid=1000
-ARG uname=ghuser
-ARG upass=ghuser
-RUN addgroup --system --gid ${uid} ${uname} ; \
-    adduser  --system --gid ${uid} --uid ${uid} --shell /bin/bash --home /home/${uname} ${uname} ; \
-    echo "${uname}:${upass}" | chpasswd; \
-    echo "${uname} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/local-user; \
-    (cd /etc/skel; find . -type f -print | tar cf - -T - | tar xvf - -C/home/${uname} ) ; \
-    echo "set mouse-=a" > /home/${uname}/.vimrc; \
-    mkdir -p /home/${uname}/.ssh ;
-
 ARG node_ver=20
 RUN curl -fsSL https://deb.nodesource.com/setup_${node_ver}.x | bash -
 
@@ -46,14 +34,13 @@ ARG msgcURL=https://github.com/microsoftgraph/msgraph-cli/releases/download/v1.9
 RUN curl -L ${msgcURL} -o /tmp/msgcli.tgz; \
     tar zxvf /tmp/msgcli.tgz -C /usr/local/bin ; rm -f  /tmp/msgcli.tgz
 
-RUN chown -R ${uname}:${uname} /home/${uname} ;
+RUN echo "set mouse-=a" > /root/.vimrc;
 
-ARG gh_url4install=github.com
-#USER ${uname}
 # pass secret by 'docker build --secret', refer https://docs.docker.com/reference/cli/docker/buildx/build/#secret
 # https://docs.docker.com/build/ci/github-actions/secrets/
 # https://scrapbox.io/kiryuanzu-public/docker_build_%E5%AE%9F%E8%A1%8C%E6%99%82%E3%81%AB_GitHub_Actions_%E3%81%AE%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E3%81%8B%E3%82%89_secrets%E6%83%85%E5%A0%B1%E3%82%92%E6%B8%A1%E3%81%97%E3%81%9F%E3%81%84%E6%99%82
 #   get SECRET TOKEN1 via FILE(/run/secrets/TOKEN1), requires docker/build-push-action@v6
+ARG gh_url4install=github.com
 RUN  --mount=type=secret,id=TOKEN1 \
      sudo cat /run/secrets/TOKEN1 | gh auth login -p https -h ${gh_url4install} --with-token; \
      gh extension install github/gh-gei; \
@@ -71,8 +58,7 @@ RUN  --mount=type=secret,id=TOKEN1 \
 # be sure you logout before ending...
 
 ARG  sDir=/opt/github-misc-scripts
-RUN  sudo mkdir -p ${sDir}; sudo chown ${uname}:${uname} ${sDir}; \
-     git clone https://github.com/joshjohanning/github-misc-scripts.git ${sDir}
+RUN  git clone https://github.com/joshjohanning/github-misc-scripts.git ${sDir}
 
 RUN { \
       echo "sDir=${sDir}"; \
@@ -83,4 +69,3 @@ RUN { \
 #ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${sDir}/api:${sDir}/gh-cli:${sDir}/gh-cli/internal:${sDir}/git:${sDir}/graphql:${sDir}/scripts:${sDir}/scripts/multi-gitter-scripts:${sDir}/scripts/recreate-security-in-repositories-and-teams
 
 ENV TZ=Asia/Tokyo
-WORKDIR /home/${uname}
