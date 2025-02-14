@@ -6,6 +6,7 @@
 - gh extensions : https://github.com/topics/gh-extension
 - REST API : https://docs.github.com/en/rest?apiVersion=2022-11-28#all-docs
 - GraphQL API : https://docs.github.com/en/graphql/reference
+- MS Graph API: https://learn.microsoft.com/en-us/graph/overview
 
 ## preinstalled tools for github ops in prebuild image:
 
@@ -115,3 +116,9 @@ az(azure-cli):
 - https://learn.microsoft.com/en-us/cli/azure/azure-cli-extensions-list
 - https://github.com/topics/azure-cli
 - https://github.com/topics/azure-cli-extension
+
+MS Graph(mgc):
+- https://learn.microsoft.com/en-us/graph/overview
+- https://learn.microsoft.com/en-us/graph/api/overview?view=graph-rest-1.0&preserve-view=true
+- https://learn.microsoft.com/en-us/graph/cli/installation?view=graph-rest-1.0&tabs=linux
+- https://github.com/microsoftgraph/microsoft-graph-explorer-v4
