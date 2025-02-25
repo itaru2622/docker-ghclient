@@ -34,6 +34,10 @@ ARG msgcURL=https://github.com/microsoftgraph/msgraph-cli/releases/download/v1.9
 RUN curl -L ${msgcURL} -o /tmp/msgcli.tgz; \
     tar zxvf /tmp/msgcli.tgz -C /usr/local/bin ; rm -f  /tmp/msgcli.tgz
 
+# git-sizer
+RUN curl -L https://github.com/github/git-sizer/releases/download/v1.5.0/git-sizer-1.5.0-linux-amd64.zip > /tmp/git-sizer.zip; \
+    unzip -x /tmp/git-sizer.zip git-sizer -d /usr/local/bin; rm -f /tmp/git-sizer.zip
+
 RUN echo "set mouse-=a" > /root/.vimrc;
 
 # pass secret by 'docker build --secret', refer https://docs.docker.com/reference/cli/docker/buildx/build/#secret
