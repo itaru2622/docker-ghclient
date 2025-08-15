@@ -9,7 +9,7 @@ ARG node_ver=20
 RUN curl -fsSL https://deb.nodesource.com/setup_${node_ver}.x | bash -
 
 # use github apt repo for latest gh client
-RUN curl -L https://cli.github.com/packages/githubcli-archive-keyring.gpg | apt-key add -; \
+RUN curl -L https://cli.github.com/packages/githubcli-archive-keyring.gpg > /etc/apt/trusted.gpg.d/github-cli.gpg ;\
     echo "deb https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
 
 # use MS repo for powershell required for github/gh-gei
