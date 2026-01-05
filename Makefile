@@ -1,5 +1,5 @@
 img ?=itaru2622/ghclient:bookworm
-baseImg  ?=python:3.12-bookworm
+baseImg  ?=python:3.13-bookworm
 node_ver ?=20
 
 wDir ?=${PWD}
