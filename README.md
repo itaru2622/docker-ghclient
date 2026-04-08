@@ -4,7 +4,9 @@
 
 - gh command line tool: https://github.com/cli/cli
 - gh extensions : https://github.com/topics/gh-extension
-- REST API : https://docs.github.com/en/rest?apiVersion=2022-11-28#all-docs
+- REST API
+  - https://github.com/github/rest-api-description
+  - https://docs.github.com/en/rest?apiVersion=2022-11-28#all-docs
 - GraphQL API : https://docs.github.com/en/graphql/reference
 - MS Graph API: https://learn.microsoft.com/en-us/graph/overview
 
